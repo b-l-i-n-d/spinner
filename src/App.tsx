@@ -1,12 +1,12 @@
 import "./App.scss";
-import { Spinner } from "./components/spinner/spinner";
+import { SpinWheel } from "./components/spinner/spin-wheel";
 import { UserDetails } from "./components/user-details/user-details";
 
 function App() {
     return (
         <div className="layout">
             <div className="left-side">
-                <Spinner />
+                <SpinWheel />
             </div>
             <div className="right-side">
                 <UserDetails />

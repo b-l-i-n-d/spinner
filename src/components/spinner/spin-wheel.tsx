@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export const Spinner = () => {
+export const SpinWheel = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [discountsData] = useState<
         {
