@@ -1,196 +1,154 @@
 import { useEffect, useRef, useState } from "react";
+import { Icons } from "../icons";
+
+import { useSpinnerContext } from "../../context/spinner-context";
+import styles from "./spin-wheel.module.scss";
 
 export const SpinWheel = () => {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const [discountsData] = useState<
-        {
-            color: string;
-            label: string;
-            type: "percent" | "amount";
-            value: number;
-        }[]
-    >([
-        {
-            color: "#ca7",
-            label: "Amazon gift voucher",
-            type: "amount",
-            value: 200,
-        },
-        {
-            color: "#7ac",
-            label: "50",
-            type: "percent",
-            value: 50,
-        },
-        {
-            color: "#77c",
-            label: "100",
-            type: "percent",
-            value: 100,
-        },
-        {
-            color: "#aac",
-            label: "5",
-            type: "percent",
-            value: 5,
-        },
-        {
-            color: "#a7c",
-            label: "500",
-            type: "percent",
-            value: 500,
-        },
-        {
-            color: "#ac7",
-            label: "0",
-            type: "percent",
-            value: 0,
-        },
-        {
-            color: "#caa",
-            label: "new",
-            type: "percent",
-            value: 0,
-        },
-        {
-            color: "#000",
-            label: "new2",
-            type: "percent",
-            value: 0,
-        },
-        {
-            color: "#000FFF",
-            label: "new3",
-            type: "percent",
-            value: 0,
-        },
-    ]);
-    const [stopAngel] = useState<number[]>([]);
-    const slices = discountsData.length;
-    const sliceDeg = 360 / slices;
-    let deg = 260;
-    // let speed = 5;
-    // let slowDownRand = 0;
-    // let isStopped = false;
-    // let lock = false;
+    const { spinnerData } = useSpinnerContext();
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [spinning, setSpinning] = useState<boolean>(false);
 
-    // const rand = (min: number, max: number) =>
-    //     Math.random() * (max - min) + min;
-    const oddEven = (num: number) => num % 2 === 1;
+    const [result, setResult] = useState<{
+        segmentIndex: number;
+        color: string;
+    }>({
+        segmentIndex: 0,
+        color: "#0000",
+    });
 
-    const deg2rad = (deg: number) => (deg * Math.PI) / 180;
+    const anglePerSegment = (2 * Math.PI) / spinnerData.length;
 
-    const drawSlice = (index: number, deg: number, color: string) => {
-        const ctx = canvasRef.current?.getContext("2d");
-        if (ctx) {
-            let sAngel;
-            let current = index <= 0 ? deg : stopAngel[index - 1];
+    const startSpin = () => {
+        if (!spinning) {
+            setSpinning(true);
 
-            if (oddEven(index)) {
-                sAngel =
-                    current <= 0
-                        ? Math.abs(Math.floor(260 + sliceDeg + 10))
-                        : Math.abs(Math.floor(current - sliceDeg + 10));
-            } else {
-                sAngel =
-                    current <= 0
-                        ? Math.abs(Math.floor(260 + sliceDeg - 10))
-                        : Math.abs(Math.floor(current - sliceDeg - 10));
-            }
+            // Calculate the target angle based on the number of segments
+            const targetAngle =
+                360 * (Math.random() * (spinnerData.length - 1) + 1); // Spin 1 to 6 times
 
-            current = sAngel;
-            stopAngel.push(current);
+            // Calculate the duration based on the target angle
+            const duration = Math.max(2000, targetAngle);
+
+            // Rotate the canvas to create the spinning effect
+            const start = Date.now();
+            const spin = () => {
+                const elapsed = Date.now() - start;
+                const rotation = (elapsed / duration) * targetAngle;
+
+                drawSpinner(rotation);
+
+                const currentSegement =
+                    Math.floor(rotation / anglePerSegment) % spinnerData.length;
+
+                if (elapsed < duration) {
+                    requestAnimationFrame(spin);
+                } else {
+                    setSpinning(false);
+                    setResult({
+                        segmentIndex: currentSegement,
+                        color: spinnerData[currentSegement].color,
+                    });
+                }
+            };
+
+            // Start the spinning animation
+            requestAnimationFrame(spin);
+        }
+    };
+
+    const drawSpinner = (rotation: number) => {
+        const canvas = canvasRef.current;
+
+        if (!canvas) {
+            return;
+        }
+
+        const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = Math.min(centerX, centerY);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+
+        spinnerData.forEach((discount, index) => {
+            const segmentRotation = rotation + index * anglePerSegment;
+
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(segmentRotation);
 
             ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.moveTo(center, center);
-            ctx.arc(
-                center,
-                center,
-                center,
-                deg2rad(deg),
-                deg2rad(deg + sliceDeg),
-                false
-            );
-            ctx.lineTo(center, center);
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, radius, 0, anglePerSegment);
+            ctx.closePath();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "white";
+
+            ctx.stroke();
+            ctx.fillStyle = discount.color;
             ctx.fill();
-        }
-    };
 
-    const drawText = (deg: number, text: string) => {
-        const ctx = canvasRef.current?.getContext("2d");
-        if (ctx) {
-            ctx.save();
-            ctx.translate(center, center);
-            ctx.rotate(deg2rad(deg));
+            const labelX = (radius / 2) * Math.cos(anglePerSegment / 2) + 30;
+            const labelY = (radius / 2) * Math.sin(anglePerSegment / 2);
+            ctx.fillStyle = "white"; // Set the color of the label text
+            ctx.font = "bold 14px Inter"; // Set the font size and type
             ctx.textAlign = "center";
-            ctx.fillStyle = "#fff";
-            ctx.font = "32px";
-            ctx.fillText(text, 130, 10);
+            ctx.shadowColor = "black";
+            ctx.shadowBlur = 5;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.fillText(discount.label, labelX, labelY);
+
             ctx.restore();
-        }
+        });
     };
-
-    const drawImg = () => {
-        const ctx = canvasRef.current?.getContext("2d");
-        if (ctx) {
-            ctx.clearRect(0, 0, width, width);
-
-            for (let i = 0; i < slices; i++) {
-                drawSlice(i, deg, discountsData[i].color);
-                drawText(deg + sliceDeg / 2, discountsData[i].label);
-                deg += sliceDeg;
-            }
-        }
-    };
-
-    // const anim = () => {
-    //     isStopped = true;
-    //     deg += speed;
-    //     deg %= 360;
-
-    //     if (!isStopped && speed < 3) {
-    //         speed = speed + 2 * 0.9;
-    //     }
-
-    //     if (isStopped) {
-    //         if (!lock) {
-    //             lock = true;
-    //             slowDownRand = rand(0.994, 0.998);
-    //         }
-    //         speed = speed > 0.2 ? (speed *= slowDownRand) : 0;
-    //     }
-
-    //     if (lock && !speed) {
-    //         deg = 208;
-    //     }
-
-    //     drawImg();
-    //     requestAnimationFrame(anim);
-    // };
-
-    const start = () => {
-        const ele = canvasRef.current;
-        ele?.classList.add("spin-wheel");
-
-        setTimeout(() => {
-            ele?.classList.remove("spin-wheel");
-            deg = stopAngel[5];
-            drawImg();
-        }, 3000);
-    };
-
-    const center = 270;
-    const width = 540;
 
     useEffect(() => {
-        drawImg();
+        drawSpinner(0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="wheel">
-            <canvas ref={canvasRef} width={width} height={width}></canvas>
-            <button onClick={start}>Start</button>
-        </div>
+        <>
+            <div
+                className={`${styles.spinnerContainer} ${
+                    spinning ? styles.spinning : ""
+                }`}
+            >
+                <canvas
+                    ref={canvasRef}
+                    width={400}
+                    height={400}
+                    className={styles.wheel}
+                ></canvas>
+                <div className={styles.arrow}>
+                    <Icons name="map-pin" fill="white" size={32} />
+                </div>
+            </div>
+            <div>
+                <button onClick={startSpin} disabled={spinning}>
+                    {spinning ? "Spinning..." : "Spin"}
+                </button>
+                {result && (
+                    <div>
+                        <p>Result:</p>
+                        <p
+                            style={{
+                                backgroundColor: result.color,
+                            }}
+                        >{`Color: ${result.color}`}</p>
+                        <p>{`Segment Index: ${result.segmentIndex}`}</p>
+                    </div>
+                )}
+            </div>
+        </>
     );
 };
