@@ -10,9 +10,8 @@ interface ISpinWheelProps {
 }
 
 export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
-    const { spinnerData } = useSpinnerContext();
+    const { spinnerData, isSpinning, setIsSpinning } = useSpinnerContext();
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [spinning, setSpinning] = useState<boolean>(false);
 
     const [result, setResult] = useState<{
         segmentIndex: number;
@@ -25,9 +24,7 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
     const anglePerSegment = (2 * Math.PI) / spinnerData.length;
 
     const startSpin = () => {
-        if (!spinning) {
-            setSpinning(true);
-
+        if (isSpinning) {
             // Calculate the target angle based on the number of segments
             const targetAngle =
                 360 * (Math.random() * (spinnerData.length - 1) + 1); // Spin 1 to 6 times
@@ -49,7 +46,7 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
                 if (elapsed < duration) {
                     requestAnimationFrame(spin);
                 } else {
-                    setSpinning(false);
+                    setIsSpinning(false);
                     setResult({
                         segmentIndex: currentSegement,
                         color: spinnerData[currentSegement].color,
@@ -117,6 +114,12 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
     };
 
     useEffect(() => {
+        if (isSpinning) {
+            startSpin();
+        }
+    }, [isSpinning]);
+
+    useEffect(() => {
         drawSpinner(0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -125,37 +128,26 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
         <>
             <div
                 className={`${styles.spinnerWheelContainer} ${
-                    spinning ? styles.spinning : ""
+                    isSpinning ? styles.spinning : ""
                 }`}
             >
                 <canvas
                     ref={canvasRef}
-                    width={400}
-                    height={400}
+                    width={600}
+                    height={600}
                     className={styles.wheel}
-                ></canvas>
+                />
                 <div className={styles.arrow}>
-                    <Icons name="map-pin" fill="white" size={32} />
+                    <Icons name="map-pin" fill="white" size={52} />
                 </div>
-            </div>
-            <div>
-                <Button onClick={startSpin} disabled={spinning}>
-                    {spinning ? "Spinning..." : "Spin"}
+                <Button
+                    className={styles.editBtn}
+                    isIcon
+                    rounded
+                    onClick={() => setIsSpinnerOpen(false)}
+                >
+                    <Icons name="wheel" size={40} />
                 </Button>
-                <Button onClick={() => setIsSpinnerOpen(false)}>
-                    Add Color
-                </Button>
-                {result && (
-                    <div>
-                        <p>Result:</p>
-                        <p
-                            style={{
-                                backgroundColor: result.color,
-                            }}
-                        >{`Color: ${result.color}`}</p>
-                        <p>{`Segment Index: ${result.segmentIndex}`}</p>
-                    </div>
-                )}
             </div>
         </>
     );

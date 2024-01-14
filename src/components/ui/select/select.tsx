@@ -13,6 +13,7 @@ interface ISelectProps {
     className?: string;
     style?: React.CSSProperties;
     name?: string;
+    block?: boolean;
 }
 
 export const Select = ({
@@ -24,6 +25,7 @@ export const Select = ({
     className,
     style,
     name,
+    block,
 }: ISelectProps) => {
     const id = useId();
     return (
@@ -37,6 +39,9 @@ export const Select = ({
                 )
             }
             <select
+                style={{
+                    width: block ? "100%" : "auto",
+                }}
                 title={title}
                 id={id}
                 className={`${styles.select} ${className}`}

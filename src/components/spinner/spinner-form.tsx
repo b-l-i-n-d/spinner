@@ -73,17 +73,22 @@ export const SpinnerForm = ({ setIsSpinnerOpen }: ISpinnerFormProps) => {
     return (
         <div className={styles.spinnerFormContainer}>
             <div className={styles.formHeader}>
-                <h2 className={styles.title}>Spinner</h2>
-                <p className={styles.subtitle}>
-                    Customize your spinner and spin it!
-                </p>
+                <Button isIcon rounded onClick={() => setIsSpinnerOpen(true)}>
+                    <Icons name="arrow-left" size={28} />
+                </Button>
+                <div>
+                    <h2 className={styles.title}>Spinner</h2>
+                    <p className={styles.subtitle}>
+                        Customize your spinner and spin it!
+                    </p>
+                </div>
             </div>
             <form className={styles.spinnerForm}>
                 {spinnerData.map((segment, index) => (
                     <div key={segment.id} className={styles.formRow}>
                         <TextInput
                             style={{
-                                width: "45%",
+                                width: "40%",
                             }}
                             name="label"
                             label={index === 0 ? "Label" : ""}
@@ -91,12 +96,20 @@ export const SpinnerForm = ({ setIsSpinnerOpen }: ISpinnerFormProps) => {
                             onChange={(e) => handleUpdateSegment(segment.id, e)}
                         />
                         <TextInput
+                            style={{
+                                width: "25%",
+                            }}
                             name="discount"
                             label={index === 0 ? "Value" : ""}
                             value={segment.discount}
                             onChange={(e) => handleUpdateSegment(segment.id, e)}
+                            block
                         />
                         <Select
+                            block
+                            style={{
+                                width: "25%",
+                            }}
                             name="type"
                             label={index === 0 ? "Type" : ""}
                             options={selectOptions}
@@ -104,6 +117,9 @@ export const SpinnerForm = ({ setIsSpinnerOpen }: ISpinnerFormProps) => {
                             onChange={(e) => handleUpdateSegment(segment.id, e)}
                         />
                         <TextInput
+                            style={{
+                                width: "10%",
+                            }}
                             name="color"
                             label={index === 0 ? "Color" : ""}
                             type="color"
@@ -113,6 +129,7 @@ export const SpinnerForm = ({ setIsSpinnerOpen }: ISpinnerFormProps) => {
 
                         <Button
                             isIcon
+                            color="danger"
                             onClick={() => handleRemoveSegment(segment.id)}
                         >
                             <Icons name="trash" />
@@ -123,9 +140,6 @@ export const SpinnerForm = ({ setIsSpinnerOpen }: ISpinnerFormProps) => {
                     <Icons name="plus" /> Add Segment
                 </Button>
             </form>
-            <Button onClick={() => setIsSpinnerOpen(true)}>
-                <Icons name="arrow-left" /> Go Back
-            </Button>
         </div>
     );
 };

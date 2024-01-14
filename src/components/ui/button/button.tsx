@@ -10,6 +10,7 @@ interface IButtonProps {
     color?: "primary" | "secondary" | "danger" | "ghost";
     isIcon?: boolean;
     form?: string;
+    rounded?: boolean;
 }
 
 export const Button = ({
@@ -22,16 +23,23 @@ export const Button = ({
     color,
     isIcon = false,
     form,
+    rounded = false,
 }: IButtonProps) => {
     return (
-        <div>
+        <div
+            style={{
+                width: block ? "100%" : "auto",
+            }}
+        >
             <button
                 type={type}
                 onClick={onClick}
                 disabled={disabled}
                 className={`${styles.button} ${isIcon && styles.icon} ${
-                    color === "primary" && styles.primary
-                } ${color === "secondary" && styles.secondary}
+                    rounded && styles.rounded
+                } ${color === "primary" && styles.primary} ${
+                    color === "secondary" && styles.secondary
+                }
                 ${color === "danger" && styles.danger}
                 ${color === "ghost" && styles.ghost}
                 ${className} ${block && styles.block} ${

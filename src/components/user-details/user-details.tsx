@@ -1,6 +1,11 @@
+import { useSpinnerContext } from "../../context/spinner-context";
+import { useUserContext } from "../../context/user-context";
 import styles from "./user-details.module.scss";
 
 export const UserDetails = () => {
+    const { spinnerData } = useSpinnerContext();
+    const { users } = useUserContext();
+
     return (
         <div className={styles.userDetails}>
             <h2 className={styles.header}>User Details</h2>
@@ -16,11 +21,28 @@ export const UserDetails = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>John Doe</td>
-                        <td>johndoe@gmail.com</td>
-                        <td>10%</td>
-                    </tr>
+                    {users.length > 0 ? (
+                        users.map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                    {
+                                        spinnerData.find(
+                                            (data) =>
+                                                data.id === user.discountId
+                                        )?.discount
+                                    }
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td align="center" colSpan={3}>
+                                No User Found
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
         </div>

@@ -7,7 +7,7 @@ interface IUserContext {
 }
 
 const UserContext = createContext<IUserContext>({
-    users: {},
+    users: [],
     setUsers: () => {},
 });
 
@@ -17,7 +17,7 @@ export const useUserContext = () => {
 };
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [users, setUsers] = useState<IUsers>({});
+    const [users, setUsers] = useState<IUsers>([]);
 
     return (
         <UserContext.Provider value={{ users, setUsers }}>

@@ -19,6 +19,11 @@
         padding: 0.3rem;
     }
 
+    &.rounded {
+        padding: 0.5rem;
+        border-radius: 50%;
+    }
+
     &.primary {
         background-color: var(--color-primary);
         border-color: var(--border-color-primary);

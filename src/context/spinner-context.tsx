@@ -2,13 +2,21 @@ import { createContext, useContext, useState } from "react";
 import { ISpinnerData } from "../types/types";
 
 interface ISpinnerContext {
+    isSpinnerReadyToSpin: boolean;
+    isSpinning: boolean;
     spinnerData: ISpinnerData;
     setSpinnerData: React.Dispatch<React.SetStateAction<ISpinnerData>>;
+    setIsSpinnerReadyToSpin: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsSpinning: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SpinnerContext = createContext<ISpinnerContext>({
     spinnerData: [],
+    isSpinning: false,
+    isSpinnerReadyToSpin: false,
     setSpinnerData: () => {},
+    setIsSpinnerReadyToSpin: () => {},
+    setIsSpinning: () => {},
 });
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -59,8 +67,22 @@ export const SpinnerProvider = ({
         },
     ]);
 
+    const [isSpinnerReadyToSpin, setIsSpinnerReadyToSpin] =
+        useState<boolean>(false);
+
+    const [isSpinning, setIsSpinning] = useState<boolean>(false);
+
     return (
-        <SpinnerContext.Provider value={{ spinnerData, setSpinnerData }}>
+        <SpinnerContext.Provider
+            value={{
+                spinnerData,
+                isSpinnerReadyToSpin,
+                isSpinning,
+                setSpinnerData,
+                setIsSpinnerReadyToSpin,
+                setIsSpinning,
+            }}
+        >
             {children}
         </SpinnerContext.Provider>
     );

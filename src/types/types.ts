@@ -1,12 +1,11 @@
 export interface IUser {
+    id: string;
     name: string;
     email: string;
     discountId: string;
 }
 
-export interface IUsers {
-    [key: string]: IUser;
-}
+export type IUsers = IUser[];
 
 export interface IDiscount {
     id: string;

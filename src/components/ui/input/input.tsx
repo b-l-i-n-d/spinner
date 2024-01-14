@@ -41,6 +41,7 @@ export const TextInput = ({
                 {required && <span className={styles.required}>*</span>}
             </label>
             <input
+                required={required}
                 id={id}
                 name={name}
                 type={type}

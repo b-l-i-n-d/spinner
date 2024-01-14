@@ -1,32 +1,56 @@
-.spinnerContainer {
+.wrapper {
     display: flex;
-    // flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
     width: 100%;
+    height: 100%;
+    position: relative;
 
-    .spinnerWheelContainer {
+    .spinnerContainer {
         display: flex;
-        align-items: center;
+        height: 100%;
+        width: 100%;
 
-        .arrow {
-            z-index: 1;
-            rotate: 90deg;
+        .spinnerWheelContainer {
+            display: flex;
+            align-items: center;
             position: relative;
-            right: 20px;
-        }
+            width: 24rem;
+            // background: #000;
 
-        .wheel {
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
+            .arrow {
+                z-index: 1;
+                rotate: 90deg;
+                position: absolute;
+                right: 0;
+            }
 
-        &.spinning {
+            .editBtn {
+                z-index: 1;
+                position: absolute;
+                left: 0;
+                top: calc(50% - 2.5rem);
+                border-width: 0.5rem;
+            }
+
             .wheel {
-                animation: spin 3s ease-in-out infinite;
+                position: absolute;
+                left: -17.5rem;
+                border: #f5f5f5 solid 1rem;
+                border-radius: 50%;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+
+            &.spinning {
+                .wheel {
+                    animation: spin 3s ease-in-out infinite;
+                }
             }
         }
+    }
+
+    .spinBtn {
+        position: absolute;
+        bottom: 10%;
+        right: 1.5rem;
     }
 
     .spinnerFormContainer {
@@ -37,7 +61,9 @@
         padding: 1rem;
 
         .formHeader {
-            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             background-color: #f5f5f5;
             border-radius: var(--border-radius);
             padding: 1rem;
@@ -69,13 +95,12 @@
                 flex-direction: row;
                 align-items: flex-end;
                 gap: 0.5rem;
-                justify-content: space-between;
+                // justify-content: space-between;
                 width: 100%;
             }
         }
     }
 }
-
 @keyframes spin {
     to {
         transform: rotate(360deg);
