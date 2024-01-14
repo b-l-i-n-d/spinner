@@ -1,0 +1,122 @@
+.wrapper {
+    margin: 0px;
+
+    .label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 14px;
+
+        &.required {
+            margin-left: 4px;
+            color: red;
+        }
+    }
+
+    .select {
+        display: block;
+        width: 100px;
+        height: 32px;
+        border: 1px solid #ccc;
+        border-radius: var(--border-radius);
+        padding: 0 0.5rem;
+        font-size: 14px;
+        color: #333;
+        background: transparent;
+        background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+        background-repeat: no-repeat;
+        background-position-x: 100%;
+        background-position-y: 5px;
+        background-repeat: no-repeat;
+        appearance: none;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            border-color: #999;
+        }
+        &:focus {
+            border-color: var(--border-color-primary);
+        }
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+
+            &:hover {
+                border-color: #ccc;
+            }
+            &:focus {
+                border-color: #ccc;
+            }
+        }
+
+        .option {
+            font-weight: 500;
+
+            &:disabled {
+                color: #999;
+            }
+
+            &:checked {
+                color: #333;
+                background-color: #ccc;
+            }
+
+            &:checked:disabled {
+                color: #999;
+                background-color: transparent;
+            }
+
+            &:checked:hover {
+                background-color: #ccc;
+            }
+
+            &:hover {
+                background-color: #ccc;
+            }
+
+            &:focus {
+                background-color: #ccc;
+            }
+
+            &:disabled:hover {
+                background-color: transparent;
+            }
+
+            &:disabled:focus {
+                background-color: transparent;
+            }
+
+            &:disabled:active {
+                background-color: transparent;
+            }
+
+            &:disabled:checked {
+                color: #999;
+                background-color: transparent;
+            }
+
+            &:disabled:checked:hover {
+                background-color: transparent;
+            }
+
+            &:disabled:checked:focus {
+                background-color: transparent;
+            }
+
+            &:disabled:checked:active {
+                background-color: transparent;
+            }
+
+            &:disabled:checked:disabled {
+                color: #999;
+                background-color: transparent;
+            }
+
+            &:disabled:checked:hover {
+                background-color: transparent;
+            }
+        }
+    }
+}

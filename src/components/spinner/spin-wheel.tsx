@@ -2,9 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Icons } from "../icons";
 
 import { useSpinnerContext } from "../../context/spinner-context";
-import styles from "./spin-wheel.module.scss";
+import { Button } from "../ui/button/button";
+import styles from "./spinner.module.scss";
 
-export const SpinWheel = () => {
+interface ISpinWheelProps {
+    setIsSpinnerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
     const { spinnerData } = useSpinnerContext();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [spinning, setSpinning] = useState<boolean>(false);
@@ -119,7 +124,7 @@ export const SpinWheel = () => {
     return (
         <>
             <div
-                className={`${styles.spinnerContainer} ${
+                className={`${styles.spinnerWheelContainer} ${
                     spinning ? styles.spinning : ""
                 }`}
             >
@@ -134,9 +139,12 @@ export const SpinWheel = () => {
                 </div>
             </div>
             <div>
-                <button onClick={startSpin} disabled={spinning}>
+                <Button onClick={startSpin} disabled={spinning}>
                     {spinning ? "Spinning..." : "Spin"}
-                </button>
+                </Button>
+                <Button onClick={() => setIsSpinnerOpen(false)}>
+                    Add Color
+                </Button>
                 {result && (
                     <div>
                         <p>Result:</p>
