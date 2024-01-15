@@ -28,7 +28,7 @@ export const SpinnerContainer = () => {
                             className={styles.spinBtn}
                             onClick={() => setIsSpinnerReadyToSpin(true)}
                         >
-                            Spin To Win
+                            <Icons name="magic-wand" /> Spin To Win
                         </Button>
                     )}
                 </>

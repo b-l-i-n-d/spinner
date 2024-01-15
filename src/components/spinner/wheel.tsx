@@ -27,7 +27,6 @@ const WheelComponent = ({
 }: IWheelComponentProps) => {
     const { spinnerData, isSpinning, setIsSpinning } = useSpinnerContext();
     let currentSegment = "";
-    let isStarted = false;
     const [isFinished, setFinished] = useState(false);
     let timerHandle = 0;
     const timerDelay = spinnerData.length;
@@ -68,7 +67,6 @@ const WheelComponent = ({
         canvasContext = canvas.getContext("2d") as CanvasRenderingContext2D;
     };
     const spin = () => {
-        isStarted = true;
         if (timerHandle === 0) {
             spinStart = new Date().getTime();
             // maxSpeed = Math.PI / ((spinnerData.length*2) + Math.random())

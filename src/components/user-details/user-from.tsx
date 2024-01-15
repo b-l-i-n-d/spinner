@@ -5,6 +5,7 @@ import { TextInput } from "../ui/input/input";
 import { useSpinnerContext } from "../../context/spinner-context";
 import { useUserContext } from "../../context/user-context";
 import { IUsers } from "../../types/types";
+import { Icons } from "../icons";
 import styles from "./user-details.module.scss";
 
 interface IFormData {
@@ -119,8 +120,9 @@ export const UserForm = () => {
                     error={errors.email}
                     block
                 />
+
                 <Button type="submit" block disabled={isSpinning}>
-                    Try Your Luck
+                    <Icons name="magic-wand" /> Try Your Luck
                 </Button>
             </form>
         </div>
