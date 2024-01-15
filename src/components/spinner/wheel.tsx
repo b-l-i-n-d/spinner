@@ -25,7 +25,7 @@ const WheelComponent = ({
     fontFamily = "Inter",
     className,
 }: IWheelComponentProps) => {
-    const { spinnerData, isSpinning, setIsSpinning } = useSpinnerContext();
+    const { spinnerData, isSpinning } = useSpinnerContext();
     let currentSegment = "";
     const [isFinished, setFinished] = useState(false);
     let timerHandle = 0;
