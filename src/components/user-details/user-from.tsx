@@ -71,19 +71,25 @@ export const UserForm = () => {
             }));
         }
 
-        setUsers(
-            (prev) =>
-                [
-                    ...prev,
-                    {
-                        name,
-                        email,
-                        discountId: "1",
-                    },
-                ] as IUsers
-        );
+        setTimeout(() => {
+            setUsers(
+                (prev) =>
+                    [
+                        ...prev,
+                        {
+                            name,
+                            email,
+                            discountId: "1",
+                        },
+                    ] as IUsers
+            );
+        }, 2000);
 
         setIsSpinning(true);
+        setFormData({
+            name: "",
+            email: "",
+        });
     };
 
     return (

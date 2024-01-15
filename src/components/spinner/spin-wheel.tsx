@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Icons } from "../icons";
 
 import { useSpinnerContext } from "../../context/spinner-context";
@@ -13,13 +13,13 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
     const { spinnerData, isSpinning, setIsSpinning } = useSpinnerContext();
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const [result, setResult] = useState<{
-        segmentIndex: number;
-        color: string;
-    }>({
-        segmentIndex: 0,
-        color: "#0000",
-    });
+    // const [result, setResult] = useState<{
+    //     segmentIndex: number;
+    //     color: string;
+    // }>({
+    //     segmentIndex: 0,
+    //     color: "#0000",
+    // });
 
     const anglePerSegment = (2 * Math.PI) / spinnerData.length;
 
@@ -27,8 +27,7 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
         if (isSpinning) {
             // Calculate the target angle based on the number of segments
             const targetAngle =
-                360 * (Math.random() * (spinnerData.length - 1) + 1); // Spin 1 to 6 times
-
+                360 * (Math.random() * (spinnerData.length - 1) + 1);
             // Calculate the duration based on the target angle
             const duration = Math.max(2000, targetAngle);
 
@@ -40,17 +39,17 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
 
                 drawSpinner(rotation);
 
-                const currentSegement =
-                    Math.floor(rotation / anglePerSegment) % spinnerData.length;
+                // const currentSegement =
+                //     Math.floor(rotation / anglePerSegment) % spinnerData.length;
 
                 if (elapsed < duration) {
                     requestAnimationFrame(spin);
                 } else {
                     setIsSpinning(false);
-                    setResult({
-                        segmentIndex: currentSegement,
-                        color: spinnerData[currentSegement].color,
-                    });
+                    // setResult({
+                    //     segmentIndex: currentSegement,
+                    //     color: spinnerData[currentSegement].color,
+                    // });
                 }
             };
 
@@ -73,13 +72,6 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = "red";
-        ctx.stroke();
-
         spinnerData.forEach((discount, index) => {
             const segmentRotation = rotation + index * anglePerSegment;
 
@@ -98,11 +90,11 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
             ctx.fillStyle = discount.color;
             ctx.fill();
 
-            const labelX = (radius / 2) * Math.cos(anglePerSegment / 2) + 30;
+            const labelX = radius * Math.cos(anglePerSegment / 2);
             const labelY = (radius / 2) * Math.sin(anglePerSegment / 2);
             ctx.fillStyle = "white"; // Set the color of the label text
-            ctx.font = "bold 14px Inter"; // Set the font size and type
-            ctx.textAlign = "center";
+            ctx.font = "bold 24px Inter"; // Set the font size and type
+            ctx.textAlign = "right"; // Set the horizontal alignment of the text
             ctx.shadowColor = "black";
             ctx.shadowBlur = 5;
             ctx.shadowOffsetX = 2;
@@ -117,6 +109,7 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
         if (isSpinning) {
             startSpin();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSpinning]);
 
     useEffect(() => {
