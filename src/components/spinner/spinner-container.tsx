@@ -27,7 +27,6 @@ export const SpinnerContainer = () => {
                         <Button
                             className={styles.spinBtn}
                             onClick={() => setIsSpinnerReadyToSpin(true)}
-                            color="primary"
                         >
                             Spin To Win
                         </Button>

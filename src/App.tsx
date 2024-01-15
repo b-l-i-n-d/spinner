@@ -12,7 +12,7 @@ function App() {
             <div
                 style={{
                     minWidth: isSpinnerReadyToSpin ? "60dvw" : "40dvw",
-                    transition: "all 0.2s ease-in-out",
+                    transition: "min-width 0.2s ease-in-out",
                 }}
                 className="left-side"
             >

@@ -71,19 +71,17 @@ export const UserForm = () => {
             }));
         }
 
-        setTimeout(() => {
-            setUsers(
-                (prev) =>
-                    [
-                        ...prev,
-                        {
-                            name,
-                            email,
-                            discountId: "1",
-                        },
-                    ] as IUsers
-            );
-        }, 2000);
+        setUsers(
+            (prev) =>
+                [
+                    ...prev,
+                    {
+                        id: Date.now().toString(),
+                        name,
+                        email,
+                    },
+                ] as IUsers
+        );
 
         setIsSpinning(true);
         setFormData({
@@ -121,12 +119,7 @@ export const UserForm = () => {
                     error={errors.email}
                     block
                 />
-                <Button
-                    type="submit"
-                    block
-                    color="primary"
-                    disabled={isSpinning}
-                >
+                <Button type="submit" block disabled={isSpinning}>
                     Try Your Luck
                 </Button>
             </form>
