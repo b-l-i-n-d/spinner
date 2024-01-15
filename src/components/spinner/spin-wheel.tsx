@@ -11,7 +11,7 @@ interface ISpinWheelProps {
 }
 
 export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
-    const { setIsSpinning } = useSpinnerContext();
+    const { setIsSpinning, setIsSpinnerReadyToSpin } = useSpinnerContext();
     const { setUsers } = useUserContext();
 
     const onFinished = (winner: string) => {
@@ -30,15 +30,14 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
         setIsSpinning(false);
     };
 
+    const handleEditSpinner = () => {
+        setIsSpinnerOpen(false);
+        setIsSpinnerReadyToSpin(false);
+    };
+
     return (
         <>
             <div className={`${styles.spinnerWheelContainer}`}>
-                {/* <canvas
-                    ref={canvasRef}
-                    width={600}
-                    height={600}
-                    className={styles.wheel}
-                /> */}
                 <WheelComponent
                     className={styles.wheel}
                     onFinished={(winner) => onFinished(winner)}
@@ -56,7 +55,7 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
                     className={styles.editBtn}
                     isIcon
                     rounded
-                    onClick={() => setIsSpinnerOpen(false)}
+                    onClick={handleEditSpinner}
                 >
                     <Icons name="wheel" size={40} />
                 </Button>

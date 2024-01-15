@@ -126,6 +126,10 @@ const WheelComponent = ({
             ctx.arc(centerX, centerY, size, lastAngle, angle, false);
             ctx.lineTo(centerX, centerY);
             ctx.closePath();
+            ctx.shadowColor = "gray";
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
             ctx.fillStyle = spinnerData[key].color;
             ctx.fill();
             ctx.stroke();
@@ -133,7 +137,7 @@ const WheelComponent = ({
             ctx.translate(centerX, centerY);
             ctx.rotate((lastAngle + angle) / 2);
             ctx.fillStyle = "white";
-            ctx.font = "bold 1rem " + fontFamily;
+            ctx.font = "bold 1.5rem " + fontFamily;
             ctx.shadowColor = "black";
             ctx.shadowBlur = 5;
             ctx.shadowOffsetX = 2;
@@ -182,17 +186,16 @@ const WheelComponent = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSpinning]);
     return (
-        <div id="wheel" className={className}>
-            <canvas
-                id="canvas"
-                width={size * 2}
-                height={size * 2}
-                style={{
-                    pointerEvents: isFinished && isOnlyOnce ? "none" : "auto",
-                    transform: "rotate(90deg)",
-                }}
-            />
-        </div>
+        <canvas
+            className={className}
+            id="canvas"
+            width={size * 2}
+            height={size * 2}
+            style={{
+                pointerEvents: isFinished && isOnlyOnce ? "none" : "auto",
+                transform: "rotate(90deg)",
+            }}
+        />
     );
 };
 export default WheelComponent;
