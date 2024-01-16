@@ -91,8 +91,6 @@ const WheelComponent = ({
 
             if (progress >= 1) finished = true;
         }
-        console.log(duration, progress);
-
         angleCurrent += angleDelta;
         while (angleCurrent >= Math.PI * 2) angleCurrent -= Math.PI * 2;
         if (finished) {
