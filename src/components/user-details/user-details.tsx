@@ -31,7 +31,7 @@ export const UserDetails = () => {
                                         spinnerData.discount.find(
                                             (data) =>
                                                 data.id === user.discountId
-                                        )?.discount
+                                        )?.label
                                     }
                                 </td>
                             </tr>
