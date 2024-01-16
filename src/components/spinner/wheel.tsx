@@ -25,14 +25,14 @@ const WheelComponent = ({
     let currentSegment = "";
     const [isFinished, setFinished] = useState(false);
     let timerHandle = 0;
-    const timerDelay = spinnerData.length;
+    const timerDelay = spinnerData.discount.length;
     let angleCurrent = 0;
     let angleDelta = 0;
     let frames = 0;
     let canvasContext = null as CanvasRenderingContext2D | null;
-    let maxSpeed = Math.PI / spinnerData.length;
-    const upTime = spinnerData.length * upDuration;
-    const downTime = spinnerData.length * downDuration;
+    let maxSpeed = Math.PI / spinnerData.discount.length;
+    const upTime = spinnerData.discount.length * upDuration;
+    const downTime = spinnerData.discount.length * downDuration;
     let spinStart = 0;
     const centerX = size;
     const centerY = size;
@@ -65,8 +65,12 @@ const WheelComponent = ({
     const spin = () => {
         if (timerHandle === 0) {
             spinStart = new Date().getTime();
-            // maxSpeed = Math.PI / ((spinnerData.length*2) + Math.random())
-            maxSpeed = Math.PI / spinnerData.length;
+            maxSpeed =
+                Math.PI /
+                (spinnerData.discount.length *
+                    (Math.random() * (spinnerData.discount.length - 2) + 2) +
+                    Math.random());
+            // maxSpeed = Math.PI / spinnerData.length;
             frames = 0;
             timerHandle = setInterval(onTimerTick, timerDelay);
         }
@@ -87,6 +91,7 @@ const WheelComponent = ({
 
             if (progress >= 1) finished = true;
         }
+        console.log(duration, progress);
 
         angleCurrent += angleDelta;
         while (angleCurrent >= Math.PI * 2) angleCurrent -= Math.PI * 2;
@@ -114,7 +119,7 @@ const WheelComponent = ({
 
     const drawSegment = (key: number, lastAngle: number, angle: number) => {
         const ctx = canvasContext;
-        const value = spinnerData[key].label;
+        const value = spinnerData.discount[key].label;
         if (ctx) {
             ctx.save();
             ctx.beginPath();
@@ -126,7 +131,7 @@ const WheelComponent = ({
             ctx.shadowBlur = 10;
             ctx.shadowOffsetX = 2;
             ctx.shadowOffsetY = 2;
-            ctx.fillStyle = spinnerData[key].color;
+            ctx.fillStyle = spinnerData.discount[key].color;
             ctx.fill();
             ctx.stroke();
             ctx.save();
@@ -146,7 +151,7 @@ const WheelComponent = ({
     const drawWheel = () => {
         const ctx = canvasContext;
         let lastAngle = angleCurrent;
-        const len = spinnerData.length;
+        const len = spinnerData.discount.length;
         const PI2 = Math.PI * 2;
         if (ctx) {
             ctx.lineWidth = 2;
@@ -164,11 +169,11 @@ const WheelComponent = ({
     const calculateCurrentSegment = () => {
         const change = angleCurrent + Math.PI / 2;
         let i =
-            spinnerData.length -
-            Math.floor((change / (Math.PI * 2)) * spinnerData.length) -
+            spinnerData.discount.length -
+            Math.floor((change / (Math.PI * 2)) * spinnerData.discount.length) -
             1;
-        if (i < 0) i = i + spinnerData.length;
-        currentSegment = spinnerData[i].id;
+        if (i < 0) i = i + spinnerData.discount.length;
+        currentSegment = spinnerData.discount[i].id;
     };
     const clear = () => {
         const ctx = canvasContext as CanvasRenderingContext2D;

@@ -32,22 +32,28 @@ export const SpinnerForm = ({ setIsSpinnerOpen }: ISpinnerFormProps) => {
 
     const handleAddSegment = () => {
         setSpinnerData((prev) => {
-            return [
+            return {
                 ...prev,
-                {
-                    id: Date.now().toString(),
-                    label: "Enter label",
-                    discount: 0,
-                    type: "percentage",
-                    color: "#000000",
-                },
-            ] as ISpinnerData;
+                discount: [
+                    ...prev.discount,
+                    {
+                        id: Math.random().toString(36).substr(2, 9),
+                        label: "Enter label",
+                        discount: 0,
+                        type: "percentage",
+                        color: "#000000",
+                    },
+                ],
+            } as ISpinnerData;
         });
     };
 
     const handleRemoveSegment = (id: string) => {
         setSpinnerData((prev) => {
-            return prev.filter((segment) => segment.id !== id);
+            return {
+                ...prev,
+                discount: prev.discount.filter((segment) => segment.id !== id),
+            };
         });
     };
 
@@ -56,17 +62,34 @@ export const SpinnerForm = ({ setIsSpinnerOpen }: ISpinnerFormProps) => {
         e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
         setSpinnerData((prev) => {
-            const segmentIndex = prev.findIndex((segment) => segment.id === id);
+            const segmentIndex = prev.discount.findIndex(
+                (segment) => segment.id === id
+            );
 
             const updatedSegment = {
-                ...prev[segmentIndex],
+                ...prev.discount[segmentIndex],
                 [e.target.name]: e.target.value,
             };
 
-            const updatedSpinnerData = [...prev];
-            updatedSpinnerData[segmentIndex] = updatedSegment;
+            const updatedSpinnerData = {
+                ...prev,
+                discount: [
+                    ...prev.discount.slice(0, segmentIndex),
+                    updatedSegment,
+                    ...prev.discount.slice(segmentIndex + 1),
+                ],
+            };
 
             return updatedSpinnerData;
+        });
+    };
+
+    const handleUpdateDuration = (e: ChangeEvent<HTMLInputElement>) => {
+        setSpinnerData((prev) => {
+            return {
+                ...prev,
+                duration: parseInt(e.target.value) || 0,
+            };
         });
     };
 
@@ -84,7 +107,17 @@ export const SpinnerForm = ({ setIsSpinnerOpen }: ISpinnerFormProps) => {
                 </div>
             </div>
             <form className={styles.spinnerForm}>
-                {spinnerData.map((segment, index) => (
+                <TextInput
+                    type="number"
+                    name="duration"
+                    label="Duration"
+                    value={spinnerData.duration}
+                    onChange={(e) => {
+                        handleUpdateDuration(e);
+                    }}
+                    block
+                />
+                {spinnerData.discount.map((segment, index) => (
                     <div key={segment.id} className={styles.formRow}>
                         <TextInput
                             style={{

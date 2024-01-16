@@ -28,7 +28,7 @@ export const UserDetails = () => {
                                 <td>{user.email}</td>
                                 <td>
                                     {
-                                        spinnerData.find(
+                                        spinnerData.discount.find(
                                             (data) =>
                                                 data.id === user.discountId
                                         )?.discount

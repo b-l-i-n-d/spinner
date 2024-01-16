@@ -11,7 +11,8 @@ interface ISpinWheelProps {
 }
 
 export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
-    const { setIsSpinning, setIsSpinnerReadyToSpin } = useSpinnerContext();
+    const { setIsSpinning, setIsSpinnerReadyToSpin, spinnerData } =
+        useSpinnerContext();
     const { setUsers } = useUserContext();
 
     const onFinished = (winner: string) => {
@@ -43,8 +44,8 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
                     onFinished={(winner) => onFinished(winner)}
                     isOnlyOnce={false}
                     size={300}
-                    upDuration={100}
-                    downDuration={1000}
+                    upDuration={0}
+                    downDuration={spinnerData.duration}
                     fontFamily="Inter"
                 />
                 <div className={styles.arrow}>

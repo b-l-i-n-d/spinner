@@ -15,4 +15,7 @@ export interface IDiscount {
     type: "percent" | "fixed";
 }
 
-export type ISpinnerData = IDiscount[];
+export interface ISpinnerData {
+    discount: IDiscount[];
+    duration: number;
+}
