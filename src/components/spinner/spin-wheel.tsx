@@ -41,7 +41,6 @@ export const SpinWheel = ({ setIsSpinnerOpen }: ISpinWheelProps) => {
                 <WheelComponent
                     className={styles.wheel}
                     onFinished={(winner) => onFinished(winner)}
-                    buttonText="Spin"
                     isOnlyOnce={false}
                     size={300}
                     upDuration={100}

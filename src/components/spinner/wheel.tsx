@@ -3,11 +3,7 @@ import { useEffect, useState } from "react";
 import { useSpinnerContext } from "../../context/spinner-context";
 
 interface IWheelComponentProps {
-    winningSegment?: string;
     onFinished: (currentSegment: string) => void;
-    primaryColor?: string;
-    contrastColor?: string;
-    buttonText?: string;
     isOnlyOnce?: boolean;
     size?: number;
     upDuration?: number;
@@ -107,13 +103,13 @@ const WheelComponent = ({
     const wheelDraw = () => {
         clear();
         drawWheel();
-        drawNeedle();
+        calculateCurrentSegment();
     };
 
     const draw = () => {
         clear();
         drawWheel();
-        drawNeedle();
+        calculateCurrentSegment();
     };
 
     const drawSegment = (key: number, lastAngle: number, angle: number) => {
@@ -165,7 +161,7 @@ const WheelComponent = ({
         }
     };
 
-    const drawNeedle = () => {
+    const calculateCurrentSegment = () => {
         const change = angleCurrent + Math.PI / 2;
         let i =
             spinnerData.length -
